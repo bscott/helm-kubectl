@@ -27,5 +27,4 @@ RUN apk add --no-cache ca-certificates bash git openssh curl \
     && chmod g+rwx /config    
 
 WORKDIR /config
-
 CMD bash
