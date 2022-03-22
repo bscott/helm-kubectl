@@ -12,19 +12,23 @@ LABEL org.label-schema.vcs-ref=$VCS_REF \
 
 # Note: Latest version of kubectl may be found at:
 # https://github.com/kubernetes/kubernetes/releases
-ENV KUBE_LATEST_VERSION="v1.18.3"
+ENV KUBE_LATEST_VERSION="v1.22.6"
 # Note: Latest version of helm may be found at
 # https://github.com/kubernetes/helm/releases
-ENV HELM_VERSION="v3.1.3"
+ENV HELM_VERSION="v3.2.4"
 
-RUN apk add --no-cache ca-certificates bash git openssh curl \
+RUN apk add --no-cache python3 py3-pip ca-certificates bash git openssh curl \
     && wget -q https://storage.googleapis.com/kubernetes-release/release/${KUBE_LATEST_VERSION}/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl \
     && chmod +x /usr/local/bin/kubectl \
     && wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
     && chmod +x /usr/local/bin/helm \
     && chmod g+rwx /root \
     && mkdir /config \
-    && chmod g+rwx /config    
+    && chmod g+rwx /config  \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install
+
 
 WORKDIR /config
 CMD bash
